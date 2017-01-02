@@ -1,0 +1,45 @@
+---
+permalink: /tags
+layout: default
+---
+<!-- List of sorted tags-->
+
+{% capture site_tags %}{% for tag in site.tags %}{{ tag | first }}{% unless forloop.last %},{% endunless %}{% endfor %}{% endcapture %}
+{% assign tag_words = site_tags | split:',' | sort %}
+<div class='articles-info'>
+	<section class='articles-info-section'>
+		<div class='container'>
+			<div class='row'>
+				<div class='col-lg-10 col-xs-12'>
+
+				  <h2>Tags</h2>
+				  <br>
+				  {% for item in (0..site.tags.size) %}{% unless forloop.last %}
+				    {% capture this_word %}{{ tag_words[item] | strip_newlines }}{% endcapture %}    
+				   	<span class="tag tag-pill tag-default"><a href="#{{ this_word | cgi_escape }}"><span class="fa fa-tag"></span>{{ this_word }}</a></span>   
+				  {% endunless %}{% endfor %}
+
+
+					<div class='articles-author'>
+					 {% for item in (0..site.tags.size) %}{% unless forloop.last %}
+					 {% capture this_word %}{{ tag_words[item] }}{% endcapture %}
+
+					    	<h3 id="{{ this_word | cgi_escape }}">{{ this_word }}</h3>
+					    	{% for post in site.tags[this_word] %}{% if post.title != null %}
+					     
+					       	  <div>
+					          	<a style='color: #3498db'href="{{ post.url }}">{{ post.title }}</a>
+					          </div>		          
+					
+					{% endif %}{% endfor %}
+					<hr>
+					{% endunless %}{% endfor %}
+
+				    </div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+

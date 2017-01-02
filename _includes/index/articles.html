@@ -1,0 +1,23 @@
+<!-- ARTICLES -->
+        <div class="col-lg-8 col-xs-12">
+            <section class="articles">
+            {% for post in site.posts limit:5 %}
+                <article class="{%include topic_case_articles.html%}">
+                    <div class="articles-header">
+                        <time datetime="{{post.date | date: '%Y-%m-%d'}}">{{post.date | date: '%B %d, %Y'}}</time>                        
+                        <span class="articles-header-category"><span class= "{% include topic_case.html%}" title="">{{post.topic}}</span>
+                    </div>
+                    <div class="articles-content">
+                        <h1><a href="{{post.url}}" title="">{{post.title}}</a></h1>
+                         {{post.excerpt}}
+                    </div>
+                    <div class="articles-footer">                        
+                        <a title="" class="btn" href="{{post.url}}">Read more</a>
+                    </div>
+                </article>
+            {% endfor %}
+            
+            
+
+            </section>
+        </div>

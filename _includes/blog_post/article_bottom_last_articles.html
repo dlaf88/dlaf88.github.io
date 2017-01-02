@@ -1,0 +1,41 @@
+<!-- ARTICLE BOTTOM INFO LAST ARTICLES -->
+        <section class="articles-info-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h1 class="articles-info-section-title">Last Three Posts:</h1>
+                    </div>
+                </div>
+            </div>
+
+            <div class="banners">
+                <div class="container">
+                    <div class="row">
+                        {% for post in site.posts limit:3%}                            
+                                    <div class="col-lg-4 col-md-6 col-xs-12">
+                                        <div class="banner-wrapper">
+                                            <a href="{{post.url}}" title="{{post.title}}">
+                                                <div class="banner-wrapper-content">
+                                                    <h1 class="h2">{{post.title}}</h1>
+                                                     <time datetime="{{post.date | date: '%Y-%m-%d'}}" class="">   {{post.date | date: '%B %d, %Y'}}</time>
+                                                        <br>   
+                                                        <hr>                                                    
+                                                        <span><b>Tags:</b>
+                                                            {% for tg in post.tags %}
+                                                            <span class="category-tag">{{tg}}</span> 
+                                                            {% endfor %}
+
+                                                        </span>                                                           
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>                               
+                        {% endfor %}                    
+                    
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ARTICLE BOTTOM INFO COMMENTS -->
