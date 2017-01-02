@@ -1,2 +1,1 @@
-# diego-blog
-Diego Lafuente's Blog
+# dlaf88.github.io
