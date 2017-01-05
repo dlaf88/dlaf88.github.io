@@ -132,19 +132,19 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
     color: #212121; }
 
 .blue {
-  color: #38b7ea; }
+  color: #3333ff; }
   .blue:hover {
-    color: #38b7ea; }
+    color: #3333ff; }
 
 .red {
-  color: #ff7473; }
+  color: #cc0000; }
   .red:hover {
-    color: #ff7473; }
+    color: #cc0000; }
 
 .yellow {
-  color: #ffc952; }
+  color: #ffcc00; }
   .yellow:hover {
-    color: #ffc952; }
+    color: #ffcc00; }
 
 .green {
   color: #6dc8bf; }
@@ -683,32 +683,32 @@ main {
         top: -15px;
         left: 0; } }
   .articles article.blue-article:before {
-    background: #38b7ea; }
+    background: #3333ff; }
   .articles article.blue-article .articles-header-tag {
-    border-color: #38b7ea;
-    color: #38b7ea; }
+    border-color: #3333ff;
+    color: #3333ff; }
   .articles article.blue-article .articles-header-category a {
-    color: #38b7ea; }
+    color: #3333ff; }
     .articles article.blue-article .articles-header-category a:hover {
-      color: #38b7ea; }
+      color: #3333ff; }
   .articles article.red-article:before {
-    background: #ff7473; }
+    background: #cc0000; }
   .articles article.red-article .articles-header-tag {
-    border-color: #ff7473;
+    border-color: #cc0000;
     color: #ff7473; }
   .articles article.red-article .articles-header-category a {
-    color: #ff7473; }
+    color: #cc0000; }
     .articles article.red-article .articles-header-category a:hover {
-      color: #ff7473; }
+      color: #cc0000; }
   .articles article.yellow-article:before {
-    background: #ffc952; }
+    background: #ffcc00; }
   .articles article.yellow-article .articles-header-tag {
-    border-color: #ffc952;
+    border-color: #ffcc00;
     color: #ffc952; }
   .articles article.yellow-article .articles-header-category a {
-    color: #ffc952; }
+    color: #ffcc00; }
     .articles article.yellow-article .articles-header-category a:hover {
-      color: #ffc952; }
+      color: #ffcc00; }
   .articles article.green-article:before {
     background: #6dc8bf; }
   .articles article.green-article .articles-header-tag {
