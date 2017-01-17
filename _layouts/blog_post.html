@@ -20,13 +20,13 @@ comments: true
                         {% for t in page.tags %}
                         
                              
-                        <span class="tag tag-pill tag-default"><a href="/tags/#{{t}}">{{t}}</a></span>                     
+                        <span class="tag tag-pill tag-default"><a href="/tags#{{t}}">{{t}}</a></span>                     
                              
                     {% endfor %}
                         <hr>
 
                             {{content}}
-                            {% include blog_post/article_bottom_info_author.html %}
+                            
                            
                         </div>
                     </div>
