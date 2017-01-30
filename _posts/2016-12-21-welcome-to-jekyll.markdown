@@ -20,7 +20,7 @@ end
 
 {% highlight ruby %}
 def riley
-	puts reid
+	puts "Hello World"
 end 
 def print_hi(name)
   puts "Hi, #{name}"
