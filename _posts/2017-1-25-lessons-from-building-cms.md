@@ -15,7 +15,7 @@ In order to improve my skills, I decided to build various projects by finding in
 Building Piotr’s CMS proved to be a great exercise.  I learned some new material and was reminded of some Rails and Ruby lessons. The following blog post details some of those lessons and reminders.
 
 <br>
-## 1. A Rails Engine is a ‘mini application’
+## 1.A Rails Engine is a ‘mini application’
 
 The CMS, named Wellspring by Piotr, was built as a  rails engine. This means that it acts like a small Rails app; for example, Wellspring has its own controller, routes, models, etc. The point of making Wellspring an engine (rather than Rails app) was to make in modular so that it could be mounted to any existing Rails app. 
 
@@ -43,7 +43,7 @@ $ rake db:migrate
 
 <b>Takeaway:</b> Rails engines are mini apps and are useful to create code that will be reused in other apps. 
 
-## 2. STI, Postgres JSON columns, and the use of dynamics methods allow for the creation of flexible models. 
+## 2.STI, Postgres JSON columns, and the use of dynamics methods allow for the creation of flexible models. 
 
 A CMS might need a blog post model today only to later need a photo gallery model or a blog link model in the future. It might seem like a good idea to create models like BlogPost, PhotoPost, BlogLink each with their own database table. However, Piotr decided to create a “catch-all” model called Entry. Other models such as BlogPost or BlogLink could inherit from Entry with the help of Single Table Inheritance(STI). Piotr used (STI) in order to add custom data and behavior to the child classes of Entry. 
 
@@ -124,7 +124,7 @@ It is important to note that although ```content_attr``` is a class method,  ```
 
 ``Reminder:`` Rails, Ruby, and Postgres provide much flexibility. In the past, I created different models each with their own database table without first reflecting on whether another approach was posssible. Piotr's CMS post reminds us to look for alternative solutions in bulding an app's model architecture.
 <br>
-## 3. The scope method in Routes can be used to provide contextual information to the Controller.
+## 3.The scope method in Routes can be used to provide contextual information to the Controller.
 
 In order to have a single interface for all types of content, Piotr uses only an ```EntriesController```: Piotr does NOT have a ```BlogPostsController``` or ```BlogLinksController```. Moreover, he uses the method ```content_class``` to provide ```EntriesController``` the information needed to work with the correct type of content. 
 
