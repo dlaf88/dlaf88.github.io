@@ -8,6 +8,7 @@ tags: Rails, Testing
 
 
 ## Classic Test-Driven Development Process
+
 1. Create the Test. The test should be for one 'thing' in the code.
 2. Make sure the Test Fails.
 3. Write the Simplest Code that could possibly make the test pass.
