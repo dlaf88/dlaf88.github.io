@@ -24,7 +24,7 @@ By following the 4 steps the code will tend to result in code that is made up of
 There are other types of testing.Testing your application assumes that you know the right answer to specify. Sometimes you don't know exactly what the programs needs to do. In acceptance testing you test that the code does what the user expects the code to do.
 
 ### Does TDD make you a better developer?
-In certain areas but becoming a better developer requires improvement in many different areas. 
+In certain areas but becoming a better developer requires the improvement of many different skills.
 
 ### Does TDD make you a faster or more efficient developer?
 Yes, but the most noticeable savings occur in the long run.
