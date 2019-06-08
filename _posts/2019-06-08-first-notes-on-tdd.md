@@ -1,3 +1,12 @@
+---
+title: First notes on TDD.
+layout: blog_post
+categories: 
+topic: Tech
+tags: Rails, Testing 
+---
+
+
 ## Classic Test-Driven Development Process
 1. Create the Test. The test should be for one 'thing' in the code.
 2. Make sure the Test Fails.
