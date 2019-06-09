@@ -19,7 +19,7 @@ tags: Rails Testing
 TDD helps with software design, which is anything in the code that goes beyond the logical correctness of the code. For example, the speed of the code, clarity of naming, robustness against errors, resistance to change, and ease of maintenance.
 
 ### How does TDD help with software design?
-By following the 4 steps the code will tend to result in code that is made up of small methods, each of which does one 'thing.' The code is less decoupled. Tests monitor the quality of the code base. If it becomes difficult to write tests, that often means your codebase is too interdependent.
+By following the 4 steps the code will tend to result in code that is made up of small methods, each of which does one 'thing.' This will result in code that is less decoupled. Tests also monitor the quality of the code base. If it becomes difficult to write tests, that often means your codebase is too interdependent.
 
 ### Why use TDD instead of some other processes?
 There are other types of testing.Testing your application assumes that you know the right answer to specify. Sometimes you don't know exactly what the programs needs to do. In acceptance testing you test that the code does what the user expects the code to do.
