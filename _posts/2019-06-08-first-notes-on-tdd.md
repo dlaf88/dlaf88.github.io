@@ -3,7 +3,7 @@ title: First notes on TDD.
 layout: blog_post
 categories: 
 topic: Tech
-tags: Rails,Testing 
+tags: Rails Testing 
 ---
 
 
