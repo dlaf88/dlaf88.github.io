@@ -32,25 +32,26 @@ Yes, but the most noticeable savings occur in the long run.
 
 
 ### Some Mechanics of TDD
-When you call rspec in the command line rspec (the program) loads the spec directory which loads all the files in the directory. Rspec then loads into memory example groups which are the suite of tests that are called after ```RSPEC.describe```.
+When you call rspec in the command line rspec (the program) loads the spec directory which loads all the files in that directory. Rspec then loads into memory example groups which are the suite of tests that are called after ```Rspec.describe```.
 
-Here rspec creates an object called ExampleGroup.
+Here rspec, internally, creates an object called ExampleGroup: 
+
 {% highlight ruby %}
-Rspec.describe do Project
+Rspec.describe Project do
 ...
 end
 {% endhighlight %}
 
-Rspec continues to execute the code in the block. After `it` rspec stores the tests and the arguments as what are called examples. 
+Here Rspec executes the code inside the do block. As it executes the code it gathers tests which are called after the `it` block. 
 {% highlight ruby %}
-Rspec.describe do Project
+Rspec.describe Project do
  it 'does something' do
  
  end
 end
 {% endhighlight %}
 
- 
+ Before running the tests Rspec randomizes the order of the ExampleGroups so that no example group depends on the other.
 
 ### Matchers
 The basic syntax of Rspec is ```expect(test_value).to(matcher)```
