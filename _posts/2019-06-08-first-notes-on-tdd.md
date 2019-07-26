@@ -30,3 +30,27 @@ In certain areas but becoming a better developer requires the improvement of man
 ### Does TDD make you a faster or more efficient developer?
 Yes, but the most noticeable savings occur in the long run.
 
+
+### Some Mechanics of TDD
+When you call rspec in the command line rspec (the program) loads the spec directory which loads all the files in the directory. Rspec then loads into memory example groups which are the suite of tests that are called after ```RSPEC.describe```.
+
+Here rspec creates an object called ExampleGroup.
+{% highlight ruby %}
+Rspec.describe do Project
+...
+end
+{% endhighlight %}
+
+Rspec continues to execute the code in the block. After `it` rspec stores the tests and the arguments as what are called examples. 
+{% highlight ruby %}
+Rspec.describe do Project
+ it 'does something' do
+ 
+ end
+end
+{% endhighlight %}
+
+ 
+
+### Matchers
+The basic syntax of Rspec is ```expect(test_value).to(matcher)```
