@@ -1,5 +1,6 @@
 ---
 title: TDD Continued
+layout: blog_post
 categories: 
 topic: Tech
 tags: Rails Testing 
