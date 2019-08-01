@@ -143,7 +143,7 @@ end
 
 ### Refactoring Stage
 
-The author introduces the ```let``` method and the Rspec's dynamic matchers. The let method is lazy meaning that it only gets invoked if its called. There is also a let! method which always get called.
+The author introduces the ```let``` method and the Rspec's dynamic matchers. The let method is lazy meaning that only gets invoked if its called. There is also a let! method which always get called.
 
 Refactoring the ```project_spec.rb``` leads to:
 
@@ -170,3 +170,75 @@ end
 
 The ```be_done``` matcher is a dynamic matcher created through Ruby's metaprogramming capabilities. 
 
+Notice that in the last test a task was added to the ```project.tasks``` array, but the spec is in regard to the whether an incomplete task was added. In this regard, the next question arises about how to test the state of the Task object.
+
+{% highlight ruby %}
+
+#inside ./spec/model/task_spec.rb
+require "rails_helper"
+
+RSpec.describe Task do
+  let(:task) {Task.new}
+  
+  it "does not have a new task as complete" do
+    expect(task).not_to be_complete
+  end
+  
+  it "allows us to complete a task" do
+    task.mark_completed
+    expect(task).to be_complete  
+  end
+
+end
+
+{% endhighlight %}
+
+To make the tests pass the following changes must be done to the Task object.
+
+{% highlight ruby %}
+
+#inside ./app/models/task.rb
+class Task
+ def initialize
+  @complete = false
+ end
+ 
+ def mark_completed
+  @complete = true
+ end
+ 
+ def complete?
+  @complete
+ end
+end
+{% endhighlight %}
+
+
+Make these changes to the Project Spec:
+
+{% highlight ruby %}
+
+...
+it 'marks a project done if its tasks are done' do
+  project.tasks << task
+  task.mark_completed
+  expect(project).to be_done
+end
+{% endhighlight %}
+
+{% highlight ruby %}
+
+#inside ./app/models/project.rb
+class Project
+  attr_accessor :tasks
+  
+  def initialize
+    @tasks = []
+  end
+  def done?
+    task.all(&:complete?)
+  end
+end
+{% endhighlight %}
+
+`what would happen if I run rspec here?`
