@@ -242,3 +242,43 @@ end
 {% endhighlight %}
 
 `what would happen if I run rspec here?`
+
+## Adding the Calculation Features
+
+Remember that the purpose of the app is to forecast the end date for the project. The project uses the data of when the tasks were completed in order to determine a forecast of when the Project will end. This means that the project app must be able to give estimates about the completion date.
+
+{% highlight ruby %}
+
+#inside ./app/models/project.rb
+...
+#notice that a new describe funtion is being called
+describe "estimates" do
+let(:project){Project.new}
+let(:done){Task.new(size: 2, completed: true)
+let(:small_not_done){Task.new(size: 1)}
+let(:large_not_done){Task.new(size: 4)}
+
+
+before(:example) do 
+  project.tasks = [done, small_not_done, large_not_done]
+end
+
+
+it 'can calculate total size' do
+  expect(project.total_size).to eq(7)
+end
+
+
+it 'can calculate remaining size' do
+  expect(project.remaining_size).to eq(5)
+end
+
+
+
+
+end
+{% endhighlight %}
+
+
+
+
