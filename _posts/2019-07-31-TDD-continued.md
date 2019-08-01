@@ -275,6 +275,53 @@ describe "estimates" do
 end
 {% endhighlight %}
 
+Notice that the Task object now has size and completed args. That means that the Task object must be changed in the following manner.
+
+{% highlight ruby %}
+
+#inside ./app/models/task.rb
+class Task
+  attr_accessor :size, :completed
+ def initialize(options={})
+  @completed = options[:completed]
+  @size = options[:size]
+ end
+ 
+ def mark_completed
+  @completed = true
+ end
+ 
+ def complete?
+  @completed
+ end
+end
+{% endhighlight %}
+
+Similarly the Project class has new methods which must be accounted for.
+
+{% highlight ruby %}
+
+#inside ./app/models/project.rb
+class Project
+  attr_accessor :tasks
+  
+  def initialize
+    @tasks = []
+  end
+  def done?
+    task.all(&:complete?)
+  end
+  
+  def total_size
+    tasks.sum(:&size)
+  end
+  
+  def remaining_size
+    tasks.reject(&complete?).sum(&:size)
+    ### reject is called on the tasks array and it returns a new array where each of the elements of the first array are called upon. 
+  end
+end
+{% endhighlight %}
 
 
 
