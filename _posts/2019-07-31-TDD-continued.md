@@ -324,4 +324,42 @@ end
 {% endhighlight %}
 
 
+### velocity
+Velocity is term describing a rate in this case, the rate at which the tasks have been completed. The author stated that only those tasks completed with the last three weeks will count as being completed.
+
+
+
+{% highlight ruby %}
+
+#inside ./spec/model/task_spec.rb
+require "rails_helper"
+
+...
+
+describe "velocity" do
+ let(:task){ Task.new(size: 3)}
+ 
+ it 'does not count an incomplete task toward velocity'
+   expect(task).not_to be_part_of_velocity
+   expec(task.points_toward_velocity).to eq(0)  
+ end
+ 
+ it 'counts a recently completed task toward velocity'
+   task.mark_completed(1.day.ago)
+   expect(task).to be_part_of_velocity
+   expec(task.points_toward_velocity).to eq(3)  
+ end  
+  
+ it 'does not count a long ago task as completed'
+   task.mark_completed(1.month.ago)
+   expect(task).not_to be_part_of_velocity
+   expec(task.points_toward_velocity).to eq(0)  
+ end  
+  
+
+
+end
+
+{% endhighlight %}
+
 
