@@ -5,7 +5,7 @@ categories:
 topic: Tech
 tags: Rails Testing 
 ---
-The following details the steps and reasoning I took in following chapter 2 of the book [Rails 5 Test Prescriptions](https://pragprog.com/book/nrtest3/rails-5-test-prescriptions) by Noel Rappin.
+The following details the steps and reasoning I took in following chapter 2 of the book [Rails 5 Test Prescriptions(https://pragprog.com/book/nrtest3/rails-5-test-prescriptions) by Noel Rappin.
 
 ## TDD chapter two of Rails 5 Test Prescription
 
@@ -260,7 +260,7 @@ describe "estimates" do
 
 
   before(:example) do 
-    project.tasks = \[done, small_not_done, large_not_done\]
+    project.tasks = [done, small_not_done, large_not_done]
   end
 
 
