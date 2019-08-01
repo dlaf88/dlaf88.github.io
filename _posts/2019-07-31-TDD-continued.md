@@ -5,11 +5,11 @@ categories:
 topic: Tech
 tags: Rails Testing 
 ---
-
+The following details the steps and reasoning I took in following chapter 2 of the book Rails 5 Test Prescriptions[https://pragprog.com/book/nrtest3/rails-5-test-prescriptions] by Noel Rappin.
 
 ## TDD chapter two of Rails 5 Test Prescription
 
-The following is the sequence of events a programemr is to take when making an app about Projects and Tasks while learning about TDD. The objective of the app is to have the a project with a set of tasks and a user would be able to determine the project's end date and rate of completion based on how and when other tasks were completed. The pedantic objective of this exercise is to demonstrate how the TDD guides design choices.
+The following is the sequence of events a programmer is to take when making an app about Projects and Tasks while learning about TDD. The objective of the app is to have the a project with a set of tasks and a user would be able to determine the project's end date and rate of completion based on how and when other tasks were completed. The pedantic objective of this exercise is to demonstrate how the TDD guides design choices.
 
 ### Logistics
 
@@ -260,7 +260,7 @@ describe "estimates" do
 
 
   before(:example) do 
-    project.tasks = [done, small_not_done, large_not_done]
+    project.tasks = \[done, small_not_done, large_not_done\]
   end
 
 
