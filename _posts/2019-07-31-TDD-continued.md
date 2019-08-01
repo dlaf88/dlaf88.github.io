@@ -362,4 +362,180 @@ end
 
 {% endhighlight %}
 
+Notice here that the Task class gained `mark_completed` and `be_part_of_velocity` and `points_toward_velocity`.
 
+
+{% highlight ruby %}
+
+#inside ./app/models/task.rb
+class Task
+ attr_accessor :size, :completed_at
+ 
+ def initialize(options = {})
+  mark_completed(options[:marked_completed]) if options[:marked_completed]
+ end
+ 
+ def mark_completed(date = Time.current)
+  @completed_at = date
+ end
+ 
+ def complete?
+  completed_at.present?
+ end
+ 
+ def part_of_velocity?
+  return false unless complete?
+  completed_at > 21.days.ago
+ end
+ 
+ 
+ def points_toward_velocity
+     part_of_velocity? ? size : 0
+ end
+ 
+end
+{% endhighlight %}
+
+
+Next up is setting specs for the Project class
+
+{% highlight ruby %}
+
+#inside ./spec/model/project_spec.rb
+require rails_helper
+
+let(:project){ Project.new }
+let(:newly_done){ Task.new(size: 3, completed_at: 1.day.ago)}
+let(:old_done){ Task.new(size: 2, completed_at: 6.months.ago)}
+let(:small_not_done){ Task.new(size: 1)}
+let(:large_not_done){ Task.new(size: 4)}
+
+before(:example) do
+  project.tasks = [newly_done, old_done, small_not_done, large_not_done]
+end
+
+it "knows its velocity" do
+  expect(project.completed_velocity).to eq(3)
+end
+
+it "knows its rate" do
+  expect(project.current_rate).to eq(1.0/7)
+end
+
+
+it "knows if it is not on schedule" do
+  expect(project.projected_days_remaining).to eq(35)
+end
+
+it "knows if it is on schedule" do
+  project.due_date = 6.months.from_now
+  expect(project).to be_on_schedule
+end
+
+end
+{% endhighlight %}
+
+
+Revising the Project class leads to the following result:
+
+{% highlight ruby %}
+
+#inside ./app/models/project.rb
+class Project
+  attr_accessor :tasks,:due_date
+  
+  def initialize
+    @tasks = []
+  end
+  def done?
+    task.all(&:complete?)
+  end
+  
+  def total_size
+    tasks.sum(:&size)
+  end
+  
+  def remaining_size
+    tasks.reject(&complete?).sum(&:size)
+    #reject is called on the tasks array and it returns a new array where each of the elements of the first array are called upon. 
+  end
+  
+  def completed_velocity
+    tasks.sum(&:points_toward_velocity)
+  end
+  
+  def current_rate
+    return completed_velocity* 1.0 /21.0
+  end
+ 
+  def projected_days_remaining
+    remaining_size/current_rate
+  end
+  
+  def on_schedule?
+    Time.zone.today + project_days_remaining <= due_date 
+  end
+end
+{% endhighlight %}
+
+### Special cases
+It is time to think about the edge cases. What happens when a project is blank meaning there are no task
+
+{% highlight ruby %}
+  ...
+  #inside /spec/models/project_spec.rb
+  
+  it "handles a blank project" do
+    expect(project.completed_velocity).to eq(0)
+    expect(project.current_rate).to eq(0)
+    expect(project.projected_days_remaining).to be_nan
+    expect(project).not_to be_on_schedule
+  
+  end
+
+{% endhighlight %}
+
+{% highlight ruby %}
+
+#inside ./app/models/project.rb
+class Project
+  attr_accessor :tasks,:due_date
+  
+  def initialize
+    @tasks = []
+  end
+  
+  def self.velocity_in_days
+    21
+  end
+  def done?
+    task.all(&:complete?)
+  end
+  
+  def total_size
+    tasks.sum(:&size)
+  end
+  
+  def remaining_size
+    tasks.reject(&complete?).sum(&:size)
+    #reject is called on the tasks array and it returns a new array where each of the elements of the first array are called upon. 
+  end
+  
+  def completed_velocity
+    tasks.sum(&:points_toward_velocity)
+  end
+  
+  def current_rate
+    return completed_velocity* 1.0 /Project.velocity_in_days
+  end
+ 
+  def projected_days_remaining
+    remaining_size/current_rate
+  end
+  
+  def on_schedule?
+    return false if project_days_remaining.nan?
+    (Time.zone.today + project_days_remaining) <= due_date 
+  end
+end
+{% endhighlight %}
