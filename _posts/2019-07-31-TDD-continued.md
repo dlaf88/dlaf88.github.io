@@ -45,7 +45,7 @@ Rspec.describe Project do
 end
 {% endhighlight %}
 
-running ```rspec``` in the command line leads to an error on uninitialized constant Project. The author then questions what path should a programmer take in passing the test. The author gives three choices 1) purist 2)practical way 3) the teaching way.
+running ```bundle exec rspec``` in the command line leads to an error on uninitialized constant Project. The author then questions what path should a programmer take in passing the test. The author gives three choices 1) purist 2)practical way 3) the teaching way.
 
 The purist way is writing the min code to get the test passing. The practical way involves writing the code that you need to eventually write to get the test passing.
 
@@ -59,7 +59,7 @@ class Project
 end
 {% endhighlight %}
 
-run ```rspec``` and this gets the test passing but now the test fails because there is no ```done?``` method.
+run ```bundle exec rspec``` and this gets the test passing but now the test fails because there is no ```done?``` method.
 
 {% highlight ruby %}
 
@@ -71,7 +71,7 @@ class Project
 end
 {% endhighlight %}
 
-running ```rspec``` again shows that the test fails because the ```done?``` method is equal to true. The expectation is that is matches be_truthy.
+running ```bundle exec rspec``` again shows that the test fails because the ```done?``` method is equal to true. The expectation is that is matches be_truthy.
 
 {% highlight ruby %}
 
