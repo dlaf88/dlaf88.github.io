@@ -135,7 +135,7 @@ class Project
     @tasks = []
   end
   def done?
-    true
+    tasks.empty?
   end
 end
 {% endhighlight %}
