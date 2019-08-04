@@ -170,7 +170,7 @@ end
 
 The ```be_done``` matcher is a dynamic matcher created through Ruby's metaprogramming capabilities. 
 
-Notice that in the last test a task was added to the ```project.tasks``` array, but the spec is in regard to the whether an incomplete task was added. In this regard, the next question arises about how to test the state of the Task object.
+Notice that in the last test a task was added to the ```project.tasks``` array, but the spec is in regard to the whether an incomplete task was added. The done? method should return true only when all of the tasks found in the tasks array have been completed. In this regard, the next question arises about how to test the state of the Task object.
 
 {% highlight ruby %}
 
