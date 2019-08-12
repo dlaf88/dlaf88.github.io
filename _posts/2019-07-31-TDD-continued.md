@@ -1,9 +1,9 @@
 ---
 title: TDD Continued
 layout: blog_post
-categories: 
+categories:
 topic: Tech
-tags: Rails Testing 
+tags: Rails Testing
 ---
 The following details the steps and reasoning I took in following chapter 2 of the book [Rails 5 Test Prescriptions(https://pragprog.com/book/nrtest3/rails-5-test-prescriptions) by Noel Rappin.
 
@@ -16,7 +16,7 @@ The following is the sequence of events a programmer is to take when making an a
 {% highlight ruby %}
 #in the Gemfile
 
-group :development, :test do
+group :development, :test dohapter 3
   gem "rspec-rails", "~> 3.7.0"
 end
 {% endhighlight %}
@@ -39,7 +39,7 @@ Rspec.describe Project do
   it "considers a project with no tasks to be done" do
     project = Project.new
     expect(project.done?).to be_truthy
-  
+
   end
 
 end
@@ -49,7 +49,7 @@ running ```bundle exec rspec``` in the command line leads to an error on uniniti
 
 The purist way is writing the min code to get the test passing. The practical way involves writing the code that you need to eventually write to get the test passing.
 
-To pass the test 
+To pass the test
 
 {% highlight ruby %}
 
@@ -87,7 +87,7 @@ The test finally passes.
 
 ### Second Test
 
-Remember that the init state regards projects with no tasks, the next spec should be about projects with tasks. 
+Remember that the init state regards projects with no tasks, the next spec should be about projects with tasks.
 
 {% highlight ruby %}
 
@@ -99,7 +99,7 @@ Rspec.describe Project do
     project = Project.new
     expect(project.done?).to be_truthy  
   end
-  
+
   it "considers a project with an incomplete task to not be done" do
     project = Project.new
     task = Task.new
@@ -119,7 +119,7 @@ running ```rspec``` leads to a failure about the uninitialized constant Task. To
 
 #inside ./app/models/task.rb
 class Task
- 
+
 end
 {% endhighlight %}
 
@@ -130,7 +130,7 @@ To fix the failing test regarding the Project.tasks method:
 #inside ./app/models/project.rb
 class Project
   attr_accessor :tasks
-  
+
   def initialize
     @tasks = []
   end
@@ -159,7 +159,7 @@ Rspec.describe Project do
   it "considers a project with no tasks to be done" do
     expect(project).to be_done
   end
-  
+
   it "considers a project with an incomplete task to not be done" do
     project.tasks << task
     expect(project).to_not be_done
@@ -168,7 +168,7 @@ Rspec.describe Project do
 end
 {% endhighlight %}
 
-The ```be_done``` matcher is a dynamic matcher created through Ruby's metaprogramming capabilities. 
+The ```be_done``` matcher is a dynamic matcher created through Ruby's metaprogramming capabilities.
 
 Notice that in the last test a task was added to the ```project.tasks``` array, but the spec is in regard to the whether an incomplete task was added. The done? method should return true only when all of the tasks found in the tasks array have been completed. In this regard, the next question arises about how to test the state of the Task object.
 
@@ -179,11 +179,11 @@ require "rails_helper"
 
 RSpec.describe Task do
   let(:task) {Task.new}
-  
+
   it "does not have a new task as complete" do
     expect(task).not_to be_complete
   end
-  
+
   it "allows us to complete a task" do
     task.mark_completed
     expect(task).to be_complete  
@@ -202,11 +202,11 @@ class Task
  def initialize
   @complete = false
  end
- 
+
  def mark_completed
   @complete = true
  end
- 
+
  def complete?
   @complete
  end
@@ -231,7 +231,7 @@ end
 #inside ./app/models/project.rb
 class Project
   attr_accessor :tasks
-  
+
   def initialize
     @tasks = []
   end
@@ -259,7 +259,7 @@ describe "estimates" do
   let(:large_not_done){Task.new(size: 4)}
 
 
-  before(:example) do 
+  before(:example) do
     project.tasks = [done, small_not_done, large_not_done]
   end
 
@@ -286,11 +286,11 @@ class Task
   @completed = options[:completed]
   @size = options[:size]
  end
- 
+
  def mark_completed
   @completed = true
  end
- 
+
  def complete?
   @completed
  end
@@ -304,21 +304,21 @@ Similarly the Project class has new methods which must be accounted for.
 #inside ./app/models/project.rb
 class Project
   attr_accessor :tasks
-  
+
   def initialize
     @tasks = []
   end
   def done?
     task.all(&:complete?)
   end
-  
+
   def total_size
     tasks.sum(:&size)
   end
-  
+
   def remaining_size
     tasks.reject(&complete?).sum(&:size)
-    #reject is called on the tasks array and it returns a new array where each of the elements of the first array are called upon. 
+    #reject is called on the tasks array and it returns a new array where each of the elements of the first array are called upon.
   end
 end
 {% endhighlight %}
@@ -338,24 +338,24 @@ require "rails_helper"
 
 describe "velocity" do
  let(:task){ Task.new(size: 3)}
- 
+
  it 'does not count an incomplete task toward velocity'
    expect(task).not_to be_part_of_velocity
    expec(task.points_toward_velocity).to eq(0)  
  end
- 
+
  it 'counts a recently completed task toward velocity'
    task.mark_completed(1.day.ago)
    expect(task).to be_part_of_velocity
    expec(task.points_toward_velocity).to eq(3)  
  end  
-  
+
  it 'does not count a long ago task as completed'
    task.mark_completed(1.month.ago)
    expect(task).not_to be_part_of_velocity
    expec(task.points_toward_velocity).to eq(0)  
  end  
-  
+
 
 
 end
@@ -370,29 +370,29 @@ Notice here that the Task class gained `mark_completed` and `be_part_of_velocity
 #inside ./app/models/task.rb
 class Task
  attr_accessor :size, :completed_at
- 
+
  def initialize(options = {})
   mark_completed(options[:marked_completed]) if options[:marked_completed]
  end
- 
+
  def mark_completed(date = Time.current)
   @completed_at = date
  end
- 
+
  def complete?
   completed_at.present?
  end
- 
+
  def part_of_velocity?
   return false unless complete?
   completed_at > 21.days.ago
  end
- 
- 
+
+
  def points_toward_velocity
      part_of_velocity? ? size : 0
  end
- 
+
 end
 {% endhighlight %}
 
@@ -443,37 +443,37 @@ Revising the Project class leads to the following result:
 #inside ./app/models/project.rb
 class Project
   attr_accessor :tasks,:due_date
-  
+
   def initialize
     @tasks = []
   end
   def done?
     task.all(&:complete?)
   end
-  
+
   def total_size
     tasks.sum(:&size)
   end
-  
+
   def remaining_size
     tasks.reject(&complete?).sum(&:size)
-    #reject is called on the tasks array and it returns a new array where each of the elements of the first array are called upon. 
+    #reject is called on the tasks array and it returns a new array where each of the elements of the first array are called upon.
   end
-  
+
   def completed_velocity
     tasks.sum(&:points_toward_velocity)
   end
-  
+
   def current_rate
     return completed_velocity* 1.0 /21.0
   end
- 
+
   def projected_days_remaining
     remaining_size/current_rate
   end
-  
+
   def on_schedule?
-    Time.zone.today + project_days_remaining <= due_date 
+    Time.zone.today + project_days_remaining <= due_date
   end
 end
 {% endhighlight %}
@@ -484,13 +484,13 @@ It is time to think about the edge cases. What happens when a project is blank m
 {% highlight ruby %}
   ...
   #inside /spec/models/project_spec.rb
-  
+
   it "handles a blank project" do
     expect(project.completed_velocity).to eq(0)
     expect(project.current_rate).to eq(0)
     expect(project.projected_days_remaining).to be_nan
     expect(project).not_to be_on_schedule
-  
+
   end
 
 {% endhighlight %}
@@ -500,42 +500,42 @@ It is time to think about the edge cases. What happens when a project is blank m
 #inside ./app/models/project.rb
 class Project
   attr_accessor :tasks,:due_date
-  
+
   def initialize
     @tasks = []
   end
-  
+
   def self.velocity_in_days
     21
   end
   def done?
     task.all(&:complete?)
   end
-  
+
   def total_size
     tasks.sum(:&size)
   end
-  
+
   def remaining_size
     tasks.reject(&complete?).sum(&:size)
-    #reject is called on the tasks array and it returns a new array where each of the elements of the first array are called upon. 
+    #reject is called on the tasks array and it returns a new array where each of the elements of the first array are called upon.
   end
-  
+
   def completed_velocity
     tasks.sum(&:points_toward_velocity)
   end
-  
+
   def current_rate
     return completed_velocity* 1.0 /Project.velocity_in_days
   end
- 
+
   def projected_days_remaining
     remaining_size/current_rate
   end
-  
+
   def on_schedule?
     return false if project_days_remaining.nan?
-    (Time.zone.today + project_days_remaining) <= due_date 
+    (Time.zone.today + project_days_remaining) <= due_date
   end
 end
 {% endhighlight %}

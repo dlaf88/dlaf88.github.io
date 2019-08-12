@@ -22,11 +22,9 @@ According to the Rails docs, a rails app inherits "a lot of its behaviour" from 
 
 ### Different types of Engines
 
-The nomenclature regarding engines is centered around the ```plugin```. In fact, to obtain an engine you have to type 1```rails new plugin name-of-engine```. Plugins can be engines and engines can be plugins.
+The engine is related to the ```plugin```. In fact, to build an engine you have to type ```rails new plugin name-of-engine --full```. Plugins can be engines and engines can be plugins.
 
 ### So what is the difference?
-
-For starters there is a hierarchy of plugins: Plugins < Full Plugins < Mountable Plugins.
 
 
 
