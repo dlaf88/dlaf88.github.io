@@ -5,18 +5,18 @@ categories:
 topic: Tech
 tags: Rails Testing
 ---
-The following details the steps and reasoning I took in following chapter 2 of the book [Rails 5 Test Prescriptions(https://pragprog.com/book/nrtest3/rails-5-test-prescriptions) by Noel Rappin.
+The following details the steps and reasoning I took in following chapter 2 of the book [Rails 5 Test Prescriptions](https://pragprog.com/book/nrtest3/rails-5-test-prescriptions) by Noel Rappin.
 
 ## TDD chapter two of Rails 5 Test Prescription
-
-The following is the sequence of events a programmer is to take when making an app about Projects and Tasks while learning about TDD. The objective of the app is to have the a project with a set of tasks and a user would be able to determine the project's end date and rate of completion based on how and when other tasks were completed. The pedantic objective of this exercise is to demonstrate how the TDD guides design choices.
+### The Objective of the App
+The user creates a project and within this project can makes tasks. The app informs the user of a projected date and rate of completion. The app makes the projected date and rate of completion determinations based on how and when other tasks were completed. The pedantic objective of this exercise is to demonstrate how the TDD guides design choices.
 
 ### Logistics
 
 {% highlight ruby %}
 #in the Gemfile
 
-group :development, :test dohapter 3
+group :development, :test do
   gem "rspec-rails", "~> 3.7.0"
 end
 {% endhighlight %}
@@ -28,7 +28,7 @@ rails generate rspec:install
 {% endhighlight %}
 
 ### Where to Start
-The book states that there are two choices: init state of the a primary object in this class ```Project``` or what it calls the happy path. The HP is a single representative example of the error-free version of the algorithm. The init state of the project is where the author starts.
+The author says that there are two choices of where to start: init state of the primary object or the Happy Path "HP". In this case the primary object is the class ```Project```. The HP is a single representative example of the error-free version of the algorithm. The author chooses to start at the `init` state.
 
 {% highlight ruby %}
 
@@ -45,11 +45,14 @@ Rspec.describe Project do
 end
 {% endhighlight %}
 
-running ```bundle exec rspec``` in the command line leads to an error on uninitialized constant Project. The author then questions what path should a programmer take in passing the test. The author gives three choices 1) purist 2)practical way 3) the teaching way.
+running ```bundle exec rspec``` in the command line leads to an error on `uninitialized constant Project`.
 
-The purist way is writing the min code to get the test passing. The practical way involves writing the code that you need to eventually write to get the test passing.
+### The Next Question
+What should a programmer do after the first fail in order to pass the test? The author gives three choices or "ways": 1) purist way 2)practical way 3) the teaching way.
 
-To pass the test
+The purist way is writing the min code to get the test passing. The practical way is writing code that the programmer knows will pass plus any additional code that the programmer knows will cause other failures.
+
+In this case, to pass the test create a `Project` model.
 
 {% highlight ruby %}
 
@@ -71,7 +74,7 @@ class Project
 end
 {% endhighlight %}
 
-running ```bundle exec rspec``` again shows that the test fails because the ```done?``` method is equal to true. The expectation is that is matches be_truthy.
+running ```bundle exec rspec``` again shows that the test fails but this time because the ```done?``` method is equal to true. The expectation is that is matches be_truthy.
 
 {% highlight ruby %}
 
@@ -87,7 +90,7 @@ The test finally passes.
 
 ### Second Test
 
-Remember that the init state regards projects with no tasks, the next spec should be about projects with tasks.
+At this point the programmer asks in what other ways is the user going to interact with the `Project` model. Remember that the init state regards projects with no tasks, the next spec should be about projects with tasks.
 
 {% highlight ruby %}
 
@@ -110,7 +113,7 @@ Rspec.describe Project do
 end
 {% endhighlight %}
 
-So after adding the spec about a project with tasks it becomes clear that the Task object is introduced. Additionally the Project object now has a ```tasks``` method.
+So after adding the spec about a project with tasks it becomes clear that the `Task` object is introduced. Additionally the `Project` object now has a ```tasks``` method.
 
 running ```rspec``` leads to a failure about the uninitialized constant Task. To fix this error:
 
@@ -143,7 +146,7 @@ end
 
 ### Refactoring Stage
 
-The author introduces the ```let``` method and the Rspec's dynamic matchers. The let method is lazy meaning that only gets invoked if its called. There is also a let! method which always get called.
+The author introduces the ```let``` method and the Rspec's dynamic matchers. The let method is lazy meaning that it only gets invoked if its called. There is also a let! method which always get called.
 
 Refactoring the ```project_spec.rb``` leads to:
 
@@ -170,7 +173,7 @@ end
 
 The ```be_done``` matcher is a dynamic matcher created through Ruby's metaprogramming capabilities.
 
-Notice that in the last test a task was added to the ```project.tasks``` array, but the spec is in regard to the whether an incomplete task was added. The done? method should return true only when all of the tasks found in the tasks array have been completed. In this regard, the next question arises about how to test the state of the Task object.
+Notice that in the last test a task was added to the ```project.tasks``` array, but the spec is in regard to the whether an incomplete task was added. The done? method should return true only when all of the tasks found in the tasks array have been completed. In this regard, the next question is about how to test the state of the Task object.
 
 {% highlight ruby %}
 
@@ -236,7 +239,7 @@ class Project
     @tasks = []
   end
   def done?
-    task.all(&:complete?)
+    tasks.all(&:complete?)
   end
 end
 {% endhighlight %}
@@ -251,7 +254,7 @@ Remember that the purpose of the app is to forecast the end date for the project
 
 #inside ./app/models/project.rb
 ...
-#notice that a new describe funtion is being called
+#notice that a new describe function is being called
 describe "estimates" do
   let(:project){Project.new}
   let(:done){Task.new(size: 2, completed: true)
@@ -263,7 +266,7 @@ describe "estimates" do
     project.tasks = [done, small_not_done, large_not_done]
   end
 
-
+  #recall that each 'it' block produces an example group
   it 'can calculate total size' do
     expect(project.total_size).to eq(7)
   end
@@ -297,7 +300,7 @@ class Task
 end
 {% endhighlight %}
 
-Similarly the Project class has new methods which must be accounted for.
+Similarly the `Project` class has new methods which must be accounted for.
 
 {% highlight ruby %}
 
@@ -341,19 +344,19 @@ describe "velocity" do
 
  it 'does not count an incomplete task toward velocity'
    expect(task).not_to be_part_of_velocity
-   expec(task.points_toward_velocity).to eq(0)  
+   expect(task.points_toward_velocity).to eq(0)  
  end
 
  it 'counts a recently completed task toward velocity'
    task.mark_completed(1.day.ago)
    expect(task).to be_part_of_velocity
-   expec(task.points_toward_velocity).to eq(3)  
+   expect(task.points_toward_velocity).to eq(3)  
  end  
 
  it 'does not count a long ago task as completed'
    task.mark_completed(1.month.ago)
    expect(task).not_to be_part_of_velocity
-   expec(task.points_toward_velocity).to eq(0)  
+   expect(task.points_toward_velocity).to eq(0)  
  end  
 
 
@@ -397,7 +400,7 @@ end
 {% endhighlight %}
 
 
-Next up is setting specs for the Project class
+Next up is setting specs for the `Project` class
 
 {% highlight ruby %}
 
@@ -436,7 +439,7 @@ end
 {% endhighlight %}
 
 
-Revising the Project class leads to the following result:
+Revising the `Project` class leads to the following result:
 
 {% highlight ruby %}
 
