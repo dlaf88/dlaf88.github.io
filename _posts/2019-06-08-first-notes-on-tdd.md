@@ -52,7 +52,8 @@ end
 {% endhighlight %}
 
  Before running the tests Rspec randomizes the order of the ExampleGroups so that no example group depends on the other.
-  <img class="img-responsive" src="https://github.com/dlaf88/dlaf88.github.io/blob/master/img/2019_07_26_17_49_42.png">
+ 
+ <img class="img-responsive" src="https://github.com/dlaf88/dlaf88.github.io/blob/master/img/2019_07_26_17_49_42.png">
 
 ### Matchers
 The basic syntax of Rspec is ```expect(test_value).to(matcher)```
