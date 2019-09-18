@@ -8,11 +8,7 @@ tags: Rails Testing
 
 ## Where we left off
 
-It is important to note where in our journey we left off. Recall that the objective of the following exercise is to learn TDD through the rails book but also to learn design thinking.
-
-### Last time
-
-The objective of the last chapter was to test `Project` and `Task` objects which through TDD passed their respective tests. The `Project` objects could calculate the estimated time of completion based on the velocity rate of completed tasks. We also had `Task` objectives that had functions such as `marked_completed`.
+The objective of the last chapter was to test `Project` and `Task` objects which through TDD passed their respective tests. The `Project` objects could calculate the estimated time of completion based on the velocity rate of completed tasks. We also had `Task` objects that had functions such as `marked_completed`.
 
 
 ### On to the task at hand
@@ -25,7 +21,7 @@ The task at hand now involves thinking about requirements. The author of the boo
 4. A project can display its progress.
 
 
-Remember that the author started the TDD process thinking about the main object and what it had to do. The first test involved the `project.done?`. Here we are talking about requirements that a user must do in order use the app. The tests that are going to following involve the concept of Outside-in testing. Such tests are considered outside-in because it involves testing a feature "the outside" and augmenting it with unit tests that drive the inside "inside tests".
+Remember that the author started the TDD process thinking about the main object and what it had to do. The first test involved the `project.done?`. Here we are talking about requirements that a user must do in order use the app. The following tests involve the concept of Outside-in testing. Such tests are considered outside-in because it involves testing a feature "the outside" and augmenting it with unit tests that drive the inside "inside tests".
 
 ### Some housekeeping
 
@@ -64,7 +60,7 @@ This code tells rails how run end-to-end system tests.
         fill_in "Tasks", with: "Choose Fabric:3\nMake it Work:5"
         click_on("Create Project")
         visit projects_path
-        expect(page).to have_content("Project Runway"
+        expect(page).to have_content("Project Runway")
         expect(page).to have_content(8)
 
 
@@ -76,7 +72,7 @@ This code tells rails how run end-to-end system tests.
 
 ### The first Test
 
-It is time to run the following rails commands.
+It is time to run the following rails commands because we now need to test Rails features.
 
 `rails g resource project name:string due_date:date`
 `rails g resource task project:references title:string size:integer completed_at:datetime`
@@ -87,9 +83,9 @@ Running `bundle exec rspec` on test produces the result `missing method new_proj
 
 {% highlight ruby %}
   #inside the /app/models/project.rb
-  class Project < ApplicationRecord
-    has_many :task, dependent: :destroy
-
+  class Project < ApplicationRecord #now inherits from ApplicationRecord
+    has_many :task, dependent: :destroy #association methods
+ 
     def self.velocity_length_in_days
       21
     end
@@ -167,19 +163,19 @@ Running `bundle exec rspec` on test produces the result `missing method new_proj
 
 `rails db:migrate`
 
-Running `rspec` now causes a different error. The error is related to controller because Rails expects a project controller.
+Running `rspec` now causes a different error. The error is related to controller because Rails expects a project controller. When a user clicks on a link created by new_project_path, Rails sends the user to the new controller of the `Project` model.
 
 
 {% highlight ruby %}
   #inside the /app/controllers/projects_controller.rb
   class ProjectsController < ApplicationController
     def new
-      \@project = Project.new
+      @project = Project.new
     end
   end
 {% endhighlight %}
 
-`bundle exec rspec` now causes errors related to the filling of the form.
+`bundle exec rspec` now causes errors related to the filling of the form because Rails expects a related view template.
 
 
 
@@ -189,13 +185,11 @@ Running `rspec` now causes a different error. The error is related to controller
   <h1> New Project</h1>
   <%= form_for(@project) do |f| %>
     <%= f.label(:name) %>
-    <%= f.text_field(:name) %>
+      <%= f.text_field(:name) %>
     <br />
-    <%= f.label(:tasks) %>
-    <%= f.text_area_tag("project[tasks]") %>
+      <%= f.label(:tasks) %>
+      <%= f.text_area_tag("project[tasks]") %>
     <br />
-    <%= f.submit %>   
-
+      <%= f.submit %>   
   <% end %>
-
 {% endhighlight %}
