@@ -62,8 +62,6 @@ This code tells rails how run end-to-end system tests.
         visit projects_path
         expect(page).to have_content("Project Runway")
         expect(page).to have_content(8)
-
-
       end
 
   end
@@ -85,7 +83,7 @@ Running `bundle exec rspec` on test produces the result `missing method new_proj
   #inside the /app/models/project.rb
   class Project < ApplicationRecord #now inherits from ApplicationRecord
     has_many :task, dependent: :destroy #association methods
- 
+
     def self.velocity_length_in_days
       21
     end
@@ -193,3 +191,50 @@ Running `rspec` now causes a different error. The error is related to controller
       <%= f.submit %>   
   <% end %>
 {% endhighlight %}
+
+Here the form object sends the data to the `ProjectsController` `def new`.
+
+### Setting Up The Workflow
+
+The author asks were the business logic should be placed. The three places he states are 1) the controller 2) the model 3) separate class to encapsulate the logic and the workflow.
+
+The author states that the controller is not a great place to place the business logic because the controller is difficult to test. The author goes with the third option.
+
+{% highlight ruby %}
+  #inside spec/workflows/creates_project_spec.rb
+  require 'rails_helper'
+
+  RSpec.describe CreatesProject do
+    it 'creates a project given a name' do
+      creator = CreatesProject.new(name:"Project Runway")
+      creator.build
+      expect(creator.project.name).to eq("Project Runway")
+    end
+  end
+{% endhighlight %}
+
+The test fails because there is no `CreatesProject` object. To pass the test the following  class must be added.
+
+{% highlight ruby %}
+  #inside the app/workflows/creates_projects.rb
+  class CreatesProject
+    attr_accessor :name,:project
+
+    def initialize(name="")
+      @name = name
+    end
+
+    def build
+      self.project = Project.new(name: name)
+    end
+
+  end
+{% endhighlight %}
+
+### What does the `CreatesProject` class do?
+
+The following diagram shows the workflow of Creates Project Class.
+
+<img class='img-responsive' src="/img/creates_project_diagram.png">
+
+Notice that the `CreateProject` class has the build method which calls its `project` method because the `CreatesProject` class has an instance variable which is an instance of the `Project` class.
