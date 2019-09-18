@@ -320,7 +320,7 @@ class Project
   end
 
   def remaining_size
-    tasks.reject(&complete?).sum(&:size)
+    tasks.reject(&:complete?).sum(&:size)
     #reject is called on the tasks array and it returns a new array where each of the elements of the first array are called upon.
   end
 end
