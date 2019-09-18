@@ -238,3 +238,151 @@ The following diagram shows the workflow of Creates Project Class.
 <img class='img-responsive' src="/img/creates_project_diagram.png">
 
 Notice that the `CreateProject` class has the build method which calls its `project` method because the `CreatesProject` class has an instance variable which is an instance of the `Project` class.
+
+
+### Now what should be tested about `CreatesProject`?
+
+Now that is clear what the class must do we must test out different cases. The following are some cases:
+  * When the user enters a project name and one task with a size.
+  * When the user enters a project name and one task with ~~no~~ size.
+  * When the user enters a project name and one task with size 0.
+  * When the user does not enter a project name and one task.
+  * When the user enters a project name and multiple tasks.
+
+The following are negative cases:
+  * When the user enters a negative number as string size.
+  * When the user does not enter any size for string size.
+  * When the user enters a word for string size instead of entering an integer.
+
+These are the tests:
+
+{% highlight ruby %}
+  #inside spec/workflows/creates_project_spec.rb
+  require 'rails_helper'
+
+  RSpec.describe CreatesProject do
+    describe "initialization" do
+      it 'creates a project given a name' do
+        creator = CreatesProject.new(name: "Project Runway")
+        creator.build
+        expect(creator.project.name).to eq("Project Runway")
+      end
+    end
+
+    describe 'string parsing' do
+      it "creates project with empty task string" do
+        creator = CreatesProject.new(name: "Project Runway",task_string: "")
+        tasks = creator.convert_string_to_tasks
+        expect(tasks).to be_empty
+      end
+
+      it 'creates project with task string but no size' do
+        creator = CreatesProject.new(name: "Project Runway",task_string: "This is the first task")
+        tasks = creator.convert_string_to_tasks
+        expect(tasks.size).to eq(1)
+      end
+
+      it 'creates project with task string with arbitrary size' do
+        creator = CreatesProject.new(name: "Project Runway",task_string: "This is the first task:2")
+        tasks = creator.convert_string_to_tasks
+        expect(tasks.first).to have_attributes(title: "This is the first task", size: 2)
+      end
+
+      it 'creates project with task string with size zero' do
+        creator = CreatesProject.new(name: "Project Runway",task_string: "This is the first task:0")
+        tasks = creator.convert_string_to_tasks
+        expect(tasks.first).to have_attributes(title: "This is the first task", size: 1)
+      end
+
+      it 'creates project with task string with malformed size' do
+        creator = CreatesProject.new(name: "Project Runway",task_string: "This is the first task:two")
+        tasks = creator.convert_string_to_tasks
+        expect(tasks.first).to have_attributes(title: "This is the first task", size: 1)
+      end
+
+      it 'creates project with task string with negative size' do
+        creator = CreatesProject.new(name: "Project Runway",task_string: "This is the first task:-1")
+        tasks = creator.convert_string_to_tasks
+        expect(tasks.first).to have_attributes(title: "This is the first task", size: 1)
+      end
+
+      it "handles multiple tasks" do
+        creator = CreatesProject.new(name: "",task_string: "First Task:2\nSecond task:3")
+        tasks = creator.convert_string_to_tasks
+        expect(tasks).to match([an_object_having_attributes(title: "First Task",size: 2),an_object_having_attributes(title: "Second task",size: 3)])spec/workflows/creates_project_spec.rb
+      end
+
+
+    end
+  end
+
+{% endhighlight %}
+
+### Failure testing at Unit instead at system level
+
+Notice that for the failure cases we did not have integration tests like the following:
+
+
+{% highlight ruby %}
+  #inside the /spec/system/add_project_spec.rb file
+  #leaving out the string under the task string
+  RSpec.describe "adding a new project without a string", type: :system do
+      it "allows a user to create a project with tasks" do
+        visit new_project_path
+        fill_in "Name", with: "Project Runway"
+        fill_in "Tasks", with: "" # leaving out the string
+        click_on("Create Project")
+        visit projects_path
+        expect(page).to have_content("Project Runway")
+        expect(page).to have_content(8)
+      end
+
+  end
+{% endhighlight %}
+
+Instead the author suggests testing failure cases at the unit level, for example, at the level of `CreatesProject`. This makes sense since system tests take much resources to run and can take much time.
+
+Notice the introduction of the `RSpec` methods: `have_attributes`,`match`, and `an_object_having_attributes`.
+
+### Changes to the `CreatesProject`class
+{% highlight ruby %}
+  #inside app/workflows/creates_projects.rb
+
+  class CreatesProject
+    attr_accessor :name,:project,:task_string
+
+    def initialize(name: "",task_string: "")
+      @name = name
+      @task_string = task_string
+    end
+
+    def build
+      self.project = Project.new(name: name)
+      project.tasks = convert_string_to_tasks
+      project
+    end
+
+
+    def create
+      build.save
+    end
+
+    def convert_string_to_tasks
+      task_string.split("\n").map do |one_task|
+        title,size = one_task.split(":")
+        Task.new(title: title, size: size_as_integer(size))
+      end
+    end
+
+    def size_as_integer(size)
+      return 1 if size.blank?
+      [size.to_i,1].max
+      #note that when a string is tried to be converted to integer the result is 0 if conversion not possible
+    end
+
+  end
+{% endhighlight %}
+
+The changes are centered on the `convert_string_to_tasks`method which incorporates the `size_as_integer`method. The `size_as_integer`method returns size `1` if the user did not enter a size or entered a negative number.
+
+Running `rspec` on the `CreatesProject` should have all the tests passing.
