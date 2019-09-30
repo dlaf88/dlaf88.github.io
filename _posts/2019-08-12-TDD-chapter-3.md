@@ -386,3 +386,71 @@ Notice the introduction of the `RSpec` methods: `have_attributes`,`match`, and `
 The changes are centered on the `convert_string_to_tasks`method which incorporates the `size_as_integer`method. The `size_as_integer`method returns size `1` if the user did not enter a size or entered a negative number.
 
 Running `rspec` on the `CreatesProject` should have all the tests passing.
+
+### Unit Testing the `CreatesProject` object
+
+How would you be able to test for failure without writing a resource intensive system test? One way is to analyze the points of failure and notice if any of such points involve an object that could be tested in isolation.
+
+An example is the `CreatesPrject` workflow object given that a name is not written. First remember that as part of the design each Project object must have a name and thus an instance of the `Project` object can not be saved without a name. In order to achieve such validation in the `Project` model object, write the following code:
+{% highlight ruby %}
+  class Project < ApplicationRecord
+  validates :name, presence: true
+  #...
+  end
+{% endhighlight %}
+
+With this change, Rails will not save the instance of a project object that does not have any name. The `CreatesProject` builds a project within the `build` method:
+
+{% highlight ruby %}
+class CreatesProject
+  #...
+
+  def build
+    self.project = Project.new(name: name)
+    project.tasks = convert_string_to_tasks
+    project
+  end
+
+  def create
+    build.save
+  end
+
+end:smile:
+{% endhighlight %}
+
+
+Notice that if the project saves the `create` method will return true, otherwise it will return false. The author suggests having a `success` method within the `CreatesProject` object so that the following test could be written within `creates_project_spec.rb`.
+
+
+{% highlight ruby %}
+  describe 'failures states' do
+    it 'fails when there is no name' do
+        creator = CreatesProject.new(name: "",task_string: "First Task:2\nSecond task:3")
+        creator.create
+        expect(creator).to_not be_a_success
+
+    end
+  end
+{% endhighlight %}
+
+This fails if there is no `success` method.
+
+{% highlight ruby %}
+class CreatesProject
+ #add to attr_accessor :success
+ #also add within the initialize method @success and set it equal to false. False is the default
+  #...
+
+  def success?
+    build
+  end
+
+  def create
+    success = build.save
+  end
+
+{% endhighlight %}
+
+## All tests now pass
+
+Before finishing this long reminder post, note that the author talked about many other valuable tips and tricks. However, I chose to only highlight what I thought was more relevant to `me`.
