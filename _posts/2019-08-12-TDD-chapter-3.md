@@ -8,12 +8,12 @@ tags: Rails Testing
 
 ## Where we left off
 
-The objective of the last chapter was to test `Project` and `Task` objects which through TDD passed their respective tests. The `Project` objects could calculate the estimated time of completion based on the velocity rate of completed tasks. We also had `Task` objects that had functions such as `marked_completed`.
+The objective of the last chapter was to test `Project` and `Task` objects which through TDD passed their respective tests. The `Project` objects could calculate the estimated time of completion based on the velocity rate of completed associated tasks. We also had `Task` objects that had functions such as `marked_completed`.
 
 
 ### On to the task at hand
 
-The task at hand now involves thinking about requirements. The author of the book state that the following a user in the project must be able to the do the following:
+The task at hand now involves thinking about project or system requirements. The author of the book states that a user in the project must be able to do the following:
 
 1. A user can enter a task, associate it with a project, and also see it on a project page.
 2. A user can create a project and seed it with tasks using the `task name:size`
@@ -21,7 +21,8 @@ The task at hand now involves thinking about requirements. The author of the boo
 4. A project can display its progress.
 
 
-Remember that the author started the TDD process thinking about the main object and what it had to do. The first test involved the `project.done?`. Here we are talking about requirements that a user must do in order use the app. The following tests involve the concept of Outside-in testing. Such tests are considered outside-in because it involves testing a feature "the outside" and augmenting it with unit tests that drive the inside "inside tests".
+Remember that the author started the TDD process thinking about the main object of the app and what it had to do. The first test involved the `project.done?`. Here we are talking about requirements that a user must do in order mark a project as done. The following tests involve the concept of Outside-in testing. Such tests are considered outside-in because it involves testing a feature from "the outside" and augmenting it with unit tests that drive the inside "inside tests".
+
 
 ### Some housekeeping
 
@@ -45,7 +46,7 @@ Next the following
 
 {% endhighlight %}
 
-This code tells rails how run end-to-end system tests.
+This code tells rails how run end-to-end system tests. In this case such tests are driven by rack.
 
 
 ### On to the matter at hand
@@ -173,7 +174,7 @@ Running `rspec` now causes a different error. The error is related to controller
   end
 {% endhighlight %}
 
-`bundle exec rspec` now causes errors related to the filling of the form because Rails expects a related view template.
+`bundle exec rspec` now causes errors related to form view because Rails expects a related view template.
 
 
 
@@ -196,7 +197,7 @@ Here the form object sends the data to the `ProjectsController` `def new`.
 
 ### Setting Up The Workflow
 
-The author asks were the business logic should be placed. The three places he states are 1) the controller 2) the model 3) separate class to encapsulate the logic and the workflow.
+Where should business logic be placed within the code? The three places the author states are 1) the controller 2) the model 3) separate class to encapsulate the logic and the workflow.
 
 The author states that the controller is not a great place to place the business logic because the controller is difficult to test. The author goes with the third option.
 
