@@ -5,9 +5,6 @@ categories:
 topic: Tech
 tags: Javascript Node
 ---
-
-
-
 ## What are streams?
 Streams are used by Node to read or write input into output sequentially? The official documentation states: that a "stream"\
 is an abstract interface for working for working with streaming data in Node.js. The stream module provides an API for implementing the stream interface.
