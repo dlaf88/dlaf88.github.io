@@ -96,6 +96,28 @@ Once a declaration has been made the object reference could be used within array
 The numberical value of each object must be unique and when the declaration is made the numerical value must be preceded by `0 R`.
 
 
+#### On PDF Structure
+
+The PDF file is organized into four sections.   
+1. Header
+2. Body
+3. Cross-reference table
+4. Trailer
+
+
+The Trailer and the cross-reference table are arguably the most important sections of the pdf file. The xref (cross reference table) allows for random access to the indirect objects found in the pdf. Indirect objects are those that were declared and could be referenced using the aforementioned methods.   
+
+One definition of the pdf is that it is structured 8-bit binary document delinated by a series of 8-bit character-based tokens, separated by white space, and arranged into longs lines of code. See Developing with the PDF, pg 13 (O'Reilly). The bits are logically separated into sections. The body is the part of the code which contains the nine types of mentioned data type objects. The x-ref and trailer are at the end and serve as a way for the reader to access information in a much quicker format.
+
+Initially the table compromises of one table which contains a single section; when a pdf is incrementally updated a new section is added to the x-ref table. The table provides the binary offset from the beginning of the file for each and every indirect object in the file, allowing a PDF processor to quickly  seek to and then read any object at any time. This is an example:
+```bash
+xref
+0 271
+0000000000 65535 f
+0000000015 00000 n
+0000000102 00000 n
+```
+This xref table begins with object 0 and contains the location of 271 objects. The first column is the location of the indirect object stated as a offset value. 
 
 
 
