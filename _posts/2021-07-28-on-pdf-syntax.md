@@ -8,11 +8,11 @@ tags: pdf
 
 # On PDF syntax
 
-I have been working on a project which involves the manipulation of the pdf file. For this reason, I have had to learn how the pdf operates internally.
+I have been working on a project which involves the manipulation of the pdf file. For this reason, I'm learniing how the pdf operates internally.
 These are some reminders on how the pdf syntax works.
 
 ## Syntax
-The elements of the "pdf language" are nine types of objects. The objects are:  
+The pdf is written in a syntax containing 9 types of elemental objects. The objects are:  
 1. Null 
 2. Integer
 3. Real
@@ -23,7 +23,7 @@ The elements of the "pdf language" are nine types of objects. The objects are:
 8. Name
 9. Stream
 
-The `Name` objects are like the keys found in JS ```javascript {"key": }```. An example of a Name Object is the `/Name` or `/S`.  
+The `Name` objects are similar to the keys found in JS `{"key": }`. An example of a Name Object is the `/Name` or `/S`.  
 The `String` objects can be written in various ways but are either encapsulated with a ( ) or < >. Strings written within < > are to be
 written in the base 64 format. The strings written within ( ) could be written in various forms.
 ```bash
