@@ -6,7 +6,7 @@ topic: Tech
 tags: pdf 
 ---
 
-# On PDF syntax
+## On PDF syntax
 
 I have been working on a project which involves the manipulation of the pdf file. For this reason, I'm learniing how the pdf operates internally.
 These are some reminders on how the pdf syntax works.
