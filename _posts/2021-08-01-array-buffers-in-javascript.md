@@ -55,7 +55,7 @@ The new byte state will be:
 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 11111111
 
 ```
-The `Uint16Array` will organize the bits into sets of 16 bits (2 bytes) each. If we try to use`Uint16Array` there are some bits which are left behind. 
+The `Uint16Array` will organize the bits for manipulation into sets of 16 bits (2 bytes) each. If we try to use`Uint16Array` to change the "hello world" bytes, there are some bits which are left behind. 
 ```BASH
 0000000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000 (0000000)<= left behind
 
@@ -66,7 +66,7 @@ RangeError: byte length of Uint32Array should be a multiple of 4
     at new Uint32Array (<anonymous>)
 
 ```
-But had I initialized 12 bytes then the `Uint16Array` view would have organized the bits as such: 
+But had I initialized 12 bytes (perhaps by using `hello world!` as an example) then the `Uint16Array` view would have organized the bits as such: 
 ```BASH
 #from
 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
@@ -88,7 +88,7 @@ To this:
 01101000 01100101 01101100 01101100 01101111 00100000 01110111 01101111 01110010 01101100 01100100
 
 ```  
-Let's start with the first byte by consulting an ASCII table: the letter `h` is represented by the decimal 104. Through consultation of the ASCII table and assignment of the `view` object, I have generated the following code:
+Let's start with the first byte by consulting an ASCII table: the letter `h` is represented by the decimal 104. Through repeated consultation of the ASCII table and assignment of the `view` object, I have generated the following code:
 
 ```Javascript
 
@@ -107,7 +107,10 @@ view[8] = 114
 view[9] = 108
 view[10] = 100
 
-
+```
+We can test our code by running:
+```Javascript
+#notice that the view object is iterable
 view.forEach((e)=>{
 	console.log(String.fromCharCode(e))
 })
