@@ -34,8 +34,8 @@ The `new ArrayBuffer(11)` invocation created an area of memory which is in "blan
 ### How can we change this so that it looks like the ASCII representation of `hello world`?  
 
 In order to manipulate the binary buffer we have to use a view object ("view"). In JS
-there are many classes of binary view objects: Uint8Array, DataView, Blob, File, etc. The view object does not store any state in memory but
-rather allows the manipulation of the state memory created by `buffer`. The views `Uint8Arrray Uint16Array Uint32Array and Float64Array` differ in how each of these classes assigns values to the alloted memory. For example:
+there are many classes of binary view objects: Uint8Array, DataView, Blob, File, etc. The view object does not store any state in memory itself but
+rather allows the manipulation of the state memory created by a `buffer`. The views `Uint8Arrray Uint16Array Uint32Array and Float64Array` differ in how each of these classes assigns values to the alloted memory. For example:
 `Uint8Array` allows ascess to the bits by indexing them as such:
 ```BASH
 (00000000) index 0 (0000000) index 1 ... (0000000) index 10 #this is the 11th byte
@@ -55,16 +55,26 @@ The new byte state will be:
 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 11111111
 
 ```
-If we try to use`Uint16Array` there are some bits which are left behind. For this reason its not possible to use `Uint16Array` with a buffer size of 11 bytes. 
+The `Uint16Array` will organize the bits into sets of 16 bits (2 bytes) each. If we try to use`Uint16Array` there are some bits which are left behind. 
 ```BASH
 0000000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000 (0000000)<= left behind
 
 ```
+For this reason its not possible to use `Uint16Array` or `Uint32Array` with a buffer size of 11 bytes. 
 ```Javascript
 RangeError: byte length of Uint32Array should be a multiple of 4
     at new Uint32Array (<anonymous>)
 
 ```
+But had I initialized 12 bytes then the `Uint16Array` view would have organized the bits as such: 
+```BASH
+#from
+00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+#to
+0000000000000000 [index 0] 0000000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000 [index 5]
+```
+
+
 
 Getting back to our original example:  
 We have to change our byte state from this:
