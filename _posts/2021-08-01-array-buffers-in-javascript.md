@@ -13,24 +13,23 @@ I'm currently working on a project which includes the manipulation of binary dat
 binary data works in JS. In Javascript, the basic binary object is ArrayBuffer – a reference to a fixed-length contiguous memory area.
 
 The ArrayBuffer can't be manipulated through the reference but rather through a view object. Say that I want to write into memory the string
-'hello world' but that I want to write it in binary form within an allotted area of memory. First let's imagine a function: `function ASCII(string) => binary` which turns a string to binary.
-This pseudo function created the following the output:
+'hello world' but that I want to write it in binary form within an allotted area of memory. This is `hello world` in binary:  
 ```BASH
 01101000 01100101 01101100 01101100 01101111 00100000 01110111 01101111 01110010 01101100 01100100
 
 ```
-Notice that the output is composed of 11 bytes. The objective becomes writing this binary into a memory by using JS. In Javascript we first have to reference an area of the memory.
+Notice that in ASCII `hello world` is composed of 11 bytes. The objective becomes writing this binary into memory by using JS. In Javascript we first have to reference an area of the memory. Let's call this area of memory a buffer.
 
 ```Javascript
 
 let buffer = new ArrayBuffer(11); 
 ```
- `let buffer` is a reference to an area of memory composed of: 
+ `buffer` is a reference to an area of memory composed of: 
 ```BASH
 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
 
 ```
-This is because the `new ArrayBuffer(11)` invocation created an area of memory which is in "blank" state.
+The `new ArrayBuffer(11)` invocation created an area of memory which is in "blank" state so all 11 bytes are composed of 0's. 
 
 ### How can we change this so that it looks like the ASCII representation of `hello world`?  
 
@@ -68,7 +67,7 @@ RangeError: byte length of Uint32Array should be a multiple of 4
 ```
 
 Getting back to our original example:  
-We have to change our bytes from this:
+We have to change our byte state from this:
 
 ```BASH
 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
@@ -79,8 +78,7 @@ To this:
 01101000 01100101 01101100 01101100 01101111 00100000 01110111 01101111 01110010 01101100 01100100
 
 ```  
-Let's start with the first byte by consulting an ASCII table: the letter `h` is represented by the decimal 104. Through consultation of the ASCII table and assignment of the
-`view` object, I have generated the following code:
+Let's start with the first byte by consulting an ASCII table: the letter `h` is represented by the decimal 104. Through consultation of the ASCII table and assignment of the `view` object, I have generated the following code:
 
 ```Javascript
 
