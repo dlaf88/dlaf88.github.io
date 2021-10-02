@@ -14,19 +14,19 @@ Inside the `tsconfig.json` file you must set "module": to "es2015".
 
 ```javascript
 export const myNumbers = [1, 2, 3, 4];
-const animals = ['Panda', 'Bear', 'Eagle']; // Not available directly outside the module
+const animals = ["Panda", "Bear", "Eagle"]; // Not available directly outside the module
 
 export function myLogger() {
   console.log(myNumbers, animals);
 }
 
 export class Alligator {
-   constructor() {
-     // ...
-   }
+  constructor() {
+    // ...
+  }
 }
-
 ```
+
 ### How to Import
 
 ```javascript
@@ -42,75 +42,82 @@ import * as Utils from 'app.js';
 npm install --save-dev webpack webpack-cli webpack-dev-server typescript ts-loader
 
 ```
-#### Installing
 
+#### Installing
 
 ```bash
 touch webpack.config.js
 
 ```
-Make sure that inside `tsconfig.json` file that `rootDir = ...` is commented out and that `sourceMap = true`.
-```javascript
-const path = require('path');
 
+Make sure that inside `tsconfig.json` file that `rootDir = ...` is commented out and that `sourceMap = true`.
+
+```javascript
+const path = require("path");
 
 module.exports = {
-  mode: 'development',
-  entry: './src/app.ts',
+  mode: "development",
+  entry: "./src/app.ts",
   output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
-    publicPath: 'dist'
+    filename: "bundle.js",
+    path: path.resolve(__dirname, "dist"),
+    publicPath: "dist",
   },
-  devtool: 'inline-source-map',
+  devtool: "inline-source-map",
   module: {
     rules: [
       {
         test: /\.ts$/,
-        use: 'ts-loader',
-        exclude: /node_modules/
-      }
-    ]
+        use: "ts-loader",
+        exclude: /node_modules/,
+      },
+    ],
   },
   resolve: {
-    extensions: ['.ts', '.js']
-  }
+    extensions: [".ts", ".js"],
+  },
 };
 ```
+
 #### In Production
 
 ```javascript
-const path = require('path');
-const CleanPlugin = require('clean-webpack-plugin');
+const path = require("path");
+const CleanPlugin = require("clean-webpack-plugin");
 
 module.exports = {
-  mode: 'production',
-  entry: './src/app.ts',
+  mode: "production",
+  entry: "./src/app.ts",
   output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist')
+    filename: "bundle.js",
+    path: path.resolve(__dirname, "dist"),
   },
-  devtool: 'none',
+  devtool: "none",
   module: {
     rules: [
       {
         test: /\.ts$/,
-        use: 'ts-loader',
-        exclude: /node_modules/
-      }
-    ]
+        use: "ts-loader",
+        exclude: /node_modules/,
+      },
+    ],
   },
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: [".ts", ".js"],
   },
-  plugins: [
-    new CleanPlugin.CleanWebpackPlugin()
-  ]
+  plugins: [new CleanPlugin.CleanWebpackPlugin()],
 };
+```
+#### Scripts
 
+```javascript
+###inside the package.json file
 
-
-
+...
+"scripts": {
+	"start": "webpack-dev-server",
+	"build": "webpack --config webpack.config.prod.js"
+}
 
 
 ```
