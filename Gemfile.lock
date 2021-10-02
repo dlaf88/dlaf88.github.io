@@ -65,7 +65,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  jekyll (= 3.8.5)
+  jekyll
   jekyll-feed (~> 0.6)
   minima (~> 2.0)
 
@@ -73,4 +73,4 @@ RUBY VERSION
    ruby 2.4.1p111
 
 BUNDLED WITH
-   1.16.2
+   2.0.1
