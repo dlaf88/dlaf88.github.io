@@ -1,3 +1,10 @@
+---
+title: Some Resources for Productivity.
+layout: blog_post
+categories:
+topic: Tech
+tags: resource
+---
 # Some Resources for Productivity
 
 ### How to Scan The Local Network
