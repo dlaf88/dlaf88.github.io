@@ -94,7 +94,7 @@ You pass functions from Parents to Children. Props can only be passed from Paren
 
 Siblings can't directly communicate with each other; so changes in information must pass through the parent who is sitting at the top of the tree.
 
-{{<div class="mermaid">
+<div class="mermaid">  
 sequenceDiagram  
  Alice->>John: Hello John, how are you?  
  John-->>Alice: Great!  
@@ -102,4 +102,4 @@ sequenceDiagram
 
 </div>
 
-}}
+
