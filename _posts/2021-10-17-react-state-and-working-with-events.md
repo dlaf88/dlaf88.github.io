@@ -59,9 +59,10 @@ The event parameter contains information about the event execution including the
 
 `js const myLister = (event)=>{ setTitle(event.target.value)} `
 This stores the valued of the state.
-| componentType | componentInstanceID | variableName | functionName | variableValue |
-| ---------------- | ------------------- | ------------ | ------------ | -------------- |
-| ExpenseComponent | 123 | title | setTitle | event.target.value |
+
+| componentType    | componentInstanceID | variableName | functionName | variableValue        |
+| ---------------- | ------------------- | ------------ | ------------ | -------------------- |
+| ExpenseComponent | 123                 | title        | setTitle     | "event.target.value" |
 
 #### different pieces of State
 
