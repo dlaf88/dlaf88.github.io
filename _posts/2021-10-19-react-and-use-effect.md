@@ -6,6 +6,8 @@ topic: Tech
 tags: Javascript react
 ---
 How the function useEffect works in React.
+# UseEffect, UseMemo, and UseRef
+
 ### React changes the DOM when the state of a component changes.
 After the state of a component changes, react then rerenders the component. Any function which is not involved in changing the state of the JSX code is 
 an effect of the component (eg a fetch of an api). The UseEffect hook is used to call functions after the render of a component. The `UseEffect()`function takes two parameters
