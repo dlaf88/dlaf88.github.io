@@ -44,7 +44,7 @@ npm install --save-dev webpack webpack-cli webpack-dev-server typescript ts-load
 ```
 #### What is Webpack
 Webpack is a module bundler. Webpack examines the modules in your application, transforms them, and the bundles them back together in one or more bundles. Webpack looks for an entry point which is the module that kicks everything off. Webpack needs loaders to process files other than .js and .json. Webpack uses plugins to process the bundle after the bundling has finished (e.g. HtmlWebpackPlugin). 
-Webpack can optimize the files further if in production mode.
+Webpack processes the file in a different manner depending on the environment.
 
 #### Installing
 
